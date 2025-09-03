@@ -31,7 +31,23 @@ vim.api.nvim_create_user_command("ManimCheck", function()
 end, {})
 
 vim.api.nvim_create_user_command("ManimPlay", function()
-	require("manim.play").play()
+	local check = require("manim.check")
+	local play = require("manim.play")
+
+	if check.ensure_python_parser() then
+		-- Parser exists, just run
+		play.play()
+	else
+		-- Parser missing, continue automatically when installed
+		vim.api.nvim_create_autocmd("User", {
+			pattern = "TSInstallFinished",
+			once = true,
+			callback = function()
+				vim.notify("[manim.nvim] Python parser installed. Running ManimPlay...", vim.log.levels.INFO)
+				play.play()
+			end,
+		})
+	end
 end, {})
 
 return M

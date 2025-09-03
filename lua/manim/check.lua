@@ -20,4 +20,16 @@ function M.manim_available(manim_path, venv_path)
 	return nil
 end
 
+function M.ensure_python_parser()
+	local parsers = require("nvim-treesitter.parsers")
+	if not parsers.has_parser("python") then
+		vim.notify("[manim.nvim] Treesitter Python parser missing! Installing...", vim.log.levels.INFO)
+		-- Trigger automatic install
+		vim.cmd("TSInstall python")
+		-- Return false to indicate parser was missing (autocmd will continue later)
+		return false
+	end
+	return true
+end
+
 return M
