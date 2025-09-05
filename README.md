@@ -34,7 +34,7 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim):
 ```lua
 {
    "yeasin50/manim.nvim",
-    cmd = { "ManimCheck", "ManimPlay" },
+    cmd = { "ManimCheck", "ManimPlay" , "ManimExport"},
     ft = "python",
     keys = {
        -- modify  as your will
@@ -47,7 +47,7 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim):
             manim_path = "manim", -- system binary
             venv_path = "/home/...../manim/env", -- optional but if you are just using environment,provide full path
             play_args = { "-pql" }, -- quality/preview args
-            export_args = { "-ql" }, -- export args  for future
+            export_args = { "-qk --transparent" }, -- export args  for future
         })
     end,
 }
@@ -62,6 +62,7 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim):
 
 - `:ManimCheck` → verifies that Manim is available (system or venv).
 - `:ManimPlay` → sends the render command to your terminal for the class under cursor.
+- `:ManimPlay` → exports the scene under cursor with `export_args`
 
 ### Example
 
@@ -84,6 +85,8 @@ The plugin will send this command to your terminal:
 ```bash
 manim -pql test.py Title
 ```
+
+Similar for `:ManimExport`
 
 ---
 
