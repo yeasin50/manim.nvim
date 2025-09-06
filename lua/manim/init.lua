@@ -50,4 +50,9 @@ vim.api.nvim_create_user_command("ManimPlay", function()
 	end
 end, {})
 
+vim.api.nvim_create_user_command("ManimExport", function()
+	local export = require("manim.export_class")
+	export.export()
+end, {})
+
 return M

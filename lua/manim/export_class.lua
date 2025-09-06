@@ -1,10 +1,10 @@
--- play.lua
+-- export_class.lua
 local M = {}
 local check = require("manim.check")
 local get_class = require("manim.get_class")
 
-function M.play(bufnr, extra_args)
-	local config = require("manim").config -- lazy require here
+function M.export(bufnr, extra_args)
+	local config = require("manim").config
 	bufnr = bufnr or 0
 
 	local manim_cmd = check.manim_available(config.manim_path, config.venv_path)
@@ -25,15 +25,15 @@ function M.play(bufnr, extra_args)
 	end
 
 	local file = vim.api.nvim_buf_get_name(bufnr)
-	local args = vim.tbl_flatten({ config.play_args, extra_args or {} })
-	local cmd_str = string.format("%s %s %s %s\n", manim_cmd, table.concat(args, " "), file, class_name)
+	local args = vim.tbl_flatten({ config.export_args, extra_args or {} })
+	local cmd_str = string.format("%s %s %s %s", manim_cmd, table.concat(args, " "), file, class_name)
 
 	for _, b in ipairs(vim.api.nvim_list_bufs()) do
 		if vim.api.nvim_buf_is_loaded(b) and vim.api.nvim_buf_get_option(b, "buftype") == "terminal" then
 			local chan = vim.b[b].terminal_job_id
 			if chan then
-				vim.api.nvim_chan_send(chan, cmd_str)
-				vim.notify("▶ Sent Manim command to terminal: " .. class_name)
+				vim.api.nvim_chan_send(chan, cmd_str .. "\n")
+				vim.notify("▶ Sent Manim export command to terminal: " .. class_name)
 				return
 			end
 		end
