@@ -47,7 +47,9 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim):
             manim_path = "manim", -- system binary
             venv_path = "/home/...../manim/env", -- optional but if you are just using environment,provide full path
             play_args = { "-pql" }, -- quality/preview args
-            export_args = { "-qk --transparent" }, -- export args  for future
+
+            -- export args, 4k, all scene, 2 core parallel uses, transparent background
+            export_args = { "-qk -a -j 2 --transparent" },
         })
     end,
 }
@@ -93,6 +95,6 @@ Similar for `:ManimExport`
 ## TODO:
 
 - [ ] project based configs
-- [ ] Export multi-core
+- [x] Export multi-core
 - [ ] without toggleterm dependency(but I use it, so maybe I won't work on it
 - [ ] ....
