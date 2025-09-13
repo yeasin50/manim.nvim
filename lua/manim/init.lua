@@ -55,4 +55,9 @@ vim.api.nvim_create_user_command("ManimExport", function()
 	export.export()
 end, {})
 
+vim.api.nvim_create_user_command("ManimExportProject", function()
+	local export = require("manim.export_project")
+	export.exportProject()
+end, {})
+
 return M
