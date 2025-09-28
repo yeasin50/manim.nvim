@@ -6,7 +6,6 @@ M.config = {
 	venv_path = nil, -- optional virtualenv
 	play_args = { "-pql" }, -- default play args
 	export_args = { "-ql" }, -- default export args
-	play_lines = 4, -- default lines before cursor where self.next_section() is injected
 }
 
 -- Setup function to override defaults
@@ -70,22 +69,21 @@ vim.api.nvim_create_user_command("ManimPlayFrom", function(opts)
 	end
 
 	local config = require("manim").config
-	local N = tonumber(opts.args) or config.play_lines
 
 	if check.ensure_python_parser() then
-		play_from.playFrom(0, nil, N)
+		play_from.playFrom(0, nil)
 	else
 		vim.api.nvim_create_autocmd("User", {
 			pattern = "TSInstallFinished",
 			once = true,
 			callback = function()
 				vim.notify("[manim.nvim] Python parser installed. Running ManimPlayFrom...", vim.log.levels.INFO)
-				play_from.playFrom(0, nil, N)
+				play_from.playFrom(0, nil)
 			end,
 		})
 	end
 end, {
-	nargs = "?", -- optional argument for N
+	nargs = "?", -- optional argument (ignored for now, cursor-based injection)
 })
 
 return M

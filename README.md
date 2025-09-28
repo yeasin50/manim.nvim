@@ -8,15 +8,14 @@ Pick the class under the cursor and play it in your terminal without leaving Neo
 ## ✨ Features
 
 - Multi-core rendering for faster project exports. All files at once.
-- Detects the class under your cursor.
-- Verifies that `import manim` is present in the file.
+- Plays animations from the cursor.
+- Detects the class under your cursor and ensures `import manim` is present.
 - Checks for a valid `manim` executable:
-  - Uses system `manim` if available.(didn't test)
+  - Uses system `manim` if available (didn’t test).
   - Falls back to a provided virtual environment (`venv`).
-- Sends play command to your terminal (works with [toggleterm.nvim](https://github.com/akinsho/toggleterm.nvim)).
 - Configurable play/export arguments.
 
-> You have to open terminal(toggleterm)for the first time
+> You have to open terminal (toggleterm) for the first time.
 
 ---
 
@@ -35,7 +34,7 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim):
 ```lua
 {
    "yeasin50/manim.nvim",
-    cmd = { "ManimCheck", "ManimPlay" , "ManimExport", "ManimExportProject"},
+    cmd = { "ManimCheck", "ManimPlay" , "ManimExport", "ManimExportProject", "ManimPlayFrom"},
     ft = "python",
     keys = {
        -- modify  as your will
@@ -78,7 +77,8 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim):
 | Command               | Description                                                                                     |
 | --------------------- | ----------------------------------------------------------------------------------------------- |
 | `:ManimCheck`         | Verifies Manim is available (system binary or virtual environment).                             |
-| `:ManimPlay`          | Renders and plays the scene under the cursor.                                                   |
+| `:ManimPlay`          | Renders and plays the scene class under the cursor.                                             |
+| `:ManimPlayFrom`      | Renders and plays the scene from the cursor line, injecting `self.next_section()`.              |
 | `:ManimExport`        | Exports the scene under the cursor using `export_args`.                                         |
 | `:ManimExportProject` | Exports all scene files in the project using the Python export script and multi-core rendering. |
 
@@ -112,5 +112,6 @@ manim -pql test.py Title
 
 - [ ] project based configs
 - [x] Export multi-core
+- [x] play from cursor
 - [ ] without toggleterm dependency(but I use it, so maybe I won't work on it
 - [ ] ....

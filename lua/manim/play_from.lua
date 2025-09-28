@@ -4,38 +4,31 @@ local check = require("manim.check")
 local get_class = require("manim.get_class")
 
 -- Prepare temporary file with injected lines
-local function prepare_temp_file(bufnr, N)
+local function prepare_temp_file(bufnr)
 	local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
 	local modified = {}
 	local construct_line = nil
-	local class_indent = ""
+	local construct_indent = ""
 
 	-- Find construct() and copy lines
 	for i, line in ipairs(lines) do
 		table.insert(modified, line)
 		if line:match("^%s*def construct%(") then
 			construct_line = i
-			class_indent = line:match("^(%s*)") or ""
-			table.insert(modified, class_indent .. "    self.next_section(skip_animations=True)")
+			construct_indent = line:match("^(%s*)") or ""
+			-- Inject skip_animations line immediately after construct()
+			table.insert(
+				modified,
+				construct_line + 1,
+				construct_indent .. "    self.next_section(skip_animations=True)"
+			)
 		end
 	end
 
-	-- Determine cursor line (or end of class)
-	local cursor_line = vim.api.nvim_win_get_cursor(0)[1] or #lines
-	N = N or require("manim").config.play_lines or 4
-	local target_line = math.max(construct_line + 1, cursor_line - N)
-
-	-- Scan backward to avoid inner blocks
-	while target_line > construct_line do
-		local line_indent = lines[target_line]:match("^(%s*)") or ""
-		if #line_indent <= #class_indent then
-			break
-		end
-		target_line = target_line - 1
-	end
-
-	-- Inject self.next_section() at safe indentation
-	table.insert(modified, math.min(target_line, #modified), class_indent .. "    self.next_section()")
+	-- Inject self.next_section() at cursor line
+	local cursor_line = vim.api.nvim_win_get_cursor(0)[1] or construct_line + 2
+	cursor_line = math.min(cursor_line, #modified)
+	table.insert(modified, cursor_line, construct_indent .. "    self.next_section()")
 
 	-- Write temp file
 	local cwd = vim.fn.getcwd()
@@ -44,9 +37,9 @@ local function prepare_temp_file(bufnr, N)
 	return tmpfile
 end
 
--- Main function to run Manim on temp file
+-- Main function
 function M.playFrom(bufnr, extra_args)
-	local bufnr = bufnr or 0
+	bufnr = bufnr or 0
 	local config = require("manim").config
 
 	local manim_cmd = check.manim_available(config.manim_path, config.venv_path)
