@@ -60,4 +60,30 @@ vim.api.nvim_create_user_command("ManimExportProject", function()
 	export.exportProject()
 end, {})
 
+vim.api.nvim_create_user_command("ManimPlayFrom", function(opts)
+	local check = require("manim.check")
+	local ok, play_from = pcall(require, "manim.play_from")
+	if not ok or type(play_from) ~= "table" then
+		vim.notify("Failed to load manim.play_from module", vim.log.levels.ERROR)
+		return
+	end
+
+	local config = require("manim").config
+
+	if check.ensure_python_parser() then
+		play_from.playFrom(0, nil)
+	else
+		vim.api.nvim_create_autocmd("User", {
+			pattern = "TSInstallFinished",
+			once = true,
+			callback = function()
+				vim.notify("[manim.nvim] Python parser installed. Running ManimPlayFrom...", vim.log.levels.INFO)
+				play_from.playFrom(0, nil)
+			end,
+		})
+	end
+end, {
+	nargs = "?", -- optional argument (ignored for now, cursor-based injection)
+})
+
 return M
