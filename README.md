@@ -34,7 +34,7 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim):
 ```lua
 {
    "yeasin50/manim.nvim",
-    cmd = { "ManimCheck", "ManimPlay" , "ManimExport", "ManimExportProject", "ManimPlayFrom"},
+    cmd = { "ManimCheck", "ManimEnvSetup", "ManimPlay" , "ManimExport", "ManimExportProject", "ManimPlayFrom"},
     ft = "python",
     keys = {
        -- modify  as your will
@@ -44,10 +44,11 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim):
 
     config = function()
         require("manim").setup({
-            manim_path = "manim", -- system binary
-            venv_path = "/home/...../manim/env", -- optional but if you are just using environment,provide full path
+            manim_path = "manim", -- system binary or venv_path is required
+            venv_path = "/home/...../manim/env", -- if you are using environment or like `ManimEnvSetup`, provide full path
             play_args = { "-pql" }, -- quality/preview args
-			export_args = {
+            export_folder = "/home/.../manim_output", -- optional: move exported class into this folder. NOTE: same file gets overridden
+			export_args = {  -- when you like to export class with `ManimExport`
 				"-qk",
 				"--media_dir=/home/..../manim_output",
 				"--transparent",
@@ -77,6 +78,7 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim):
 | Command               | Description                                                                                     |
 | --------------------- | ----------------------------------------------------------------------------------------------- |
 | `:ManimCheck`         | Verifies Manim is available (system binary or virtual environment).                             |
+| `:ManimEnvSetup`      | _Linux Only_ install manim from into env directory                                              |
 | `:ManimPlay`          | Renders and plays the scene class under the cursor.                                             |
 | `:ManimPlayFrom`      | Renders and plays the scene from the cursor line, injecting `self.next_section()`.              |
 | `:ManimExport`        | Exports the scene under the cursor using `export_args`.                                         |
@@ -110,8 +112,7 @@ manim -pql test.py Title
 
 ## TODO:
 
+- [ ] adapt other than `mv` to move files for other bloated OS(ney.... can not test)
 - [ ] project based configs
-- [x] Export multi-core
-- [x] play from cursor
 - [ ] without toggleterm dependency(but I use it, so maybe I won't work on it
 - [ ] ....

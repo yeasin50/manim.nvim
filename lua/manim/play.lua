@@ -9,7 +9,7 @@ function M.play(bufnr, extra_args)
 
 	local manim_cmd = check.manim_available(config.manim_path, config.venv_path)
 	if not manim_cmd then
-		vim.notify("❌ Manim not found!", vim.log.levels.ERROR)
+		vim.notify("❌ Manim is unavailable. Use :ManimEnvSetup.", vim.log.levels.ERROR)
 		return
 	end
 
