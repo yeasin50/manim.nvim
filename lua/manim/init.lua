@@ -6,6 +6,7 @@ M.config = {
 	venv_path = nil, -- optional virtualenv
 	play_args = { "-pql" }, -- default play args
 	export_args = { "-ql" }, -- default export args
+	export_file_dest = nil, -- useful to move exported class into export_file_dest
 }
 
 -- Setup function to override defaults
@@ -26,11 +27,11 @@ vim.api.nvim_create_user_command("ManimCheck", function()
 	if manim_cmd then
 		vim.notify("✔ Manim available at: " .. manim_cmd)
 	else
-		vim.notify("❌ Manim not found!", vim.log.levels.ERROR)
+		vim.notify("❌ Manim is unavailable. Use :ManimEnvSetup.", vim.log.levels.ERROR)
 	end
 end, {})
 
-vim.api.nvim_create_user_command("ManimEnvInstall", function()
+vim.api.nvim_create_user_command("ManimEnvSetup", function()
 	local check = require("manim.check")
 	local manim_cmd = check.manim_available(M.config.manim_path, M.config.venv_path)
 	if manim_cmd then
