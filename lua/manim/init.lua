@@ -30,6 +30,18 @@ vim.api.nvim_create_user_command("ManimCheck", function()
 	end
 end, {})
 
+vim.api.nvim_create_user_command("ManimEnvInstall", function()
+	local check = require("manim.check")
+	local manim_cmd = check.manim_available(M.config.manim_path, M.config.venv_path)
+	if manim_cmd then
+		vim.notify("✔ Manim available at: " .. manim_cmd)
+	else
+		vim.notify("Installing manim into " .. M.config.venv_path)
+		local installer = require("manim.setup_env")
+		installer.install()
+	end
+end, {})
+
 vim.api.nvim_create_user_command("ManimPlay", function()
 	local check = require("manim.check")
 	local play = require("manim.play")

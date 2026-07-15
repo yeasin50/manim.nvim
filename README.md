@@ -77,6 +77,7 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim):
 | Command               | Description                                                                                     |
 | --------------------- | ----------------------------------------------------------------------------------------------- |
 | `:ManimCheck`         | Verifies Manim is available (system binary or virtual environment).                             |
+| `:ManimEnvInstall`    | _Linux Only_ install manim from into env directory                                              |
 | `:ManimPlay`          | Renders and plays the scene class under the cursor.                                             |
 | `:ManimPlayFrom`      | Renders and plays the scene from the cursor line, injecting `self.next_section()`.              |
 | `:ManimExport`        | Exports the scene under the cursor using `export_args`.                                         |
@@ -111,7 +112,5 @@ manim -pql test.py Title
 ## TODO:
 
 - [ ] project based configs
-- [x] Export multi-core
-- [x] play from cursor
 - [ ] without toggleterm dependency(but I use it, so maybe I won't work on it
 - [ ] ....
