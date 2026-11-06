@@ -3,6 +3,8 @@
 A small Neovim plugin to run [Manim](https://www.manim.community/) scenes directly from your editor.
 Pick the class under the cursor and play it in your terminal without leaving Neovim.
 
+[Sample Video Walkthrough](https://youtu.be/uSUquTUIT-U?utm_source=chatgpt.com)
+
 ---
 
 ## ✨ Features
